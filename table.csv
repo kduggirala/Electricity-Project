@@ -1,0 +1,115 @@
+Pipeline,Number of Rate Schedules,Number of Recept Points,Need to Clear Receipt?,Number of Delivery Points,Need to Clear Delivery?
+"Algonquin Gas Transmission, LLC",37,76,0,198,0
+Alliance Pipeline L.P.,6,7,0,15,0
+ANR Pipeline Company,22,7,1,7,1
+ANR Storage Company,2,2,0,4,0
+"BBT (AlaTenn), LLC",3,14,0,103,0
+"BBT (Midla), LLC",8,53,0,112,0
+"Big Sandy Pipeline, LLC",2,2,0,2,0
+Bison Pipeline LLC,4,2,0,2,0
+Black Marlin Pipeline Company,3,1,0,3,0
+Blue Lake Gas Storage Company,2,1,0,2,0
+"Cameron Interstate Pipeline, LLC",9,1,1,1,1
+Central Kentucky Transmission Company,2,3,0,3,0
+"Chandeleur Pipe Line, LLC",2,1,1,1,1
+"Cheniere Creole Trail Pipeline, L.P.",3,1,1,1,1
+"Cheyenne Plains Gas Pipeline Company, LLC",4,20,1,20,1
+"Cimarron River Pipeline, LLC",2,64,0,17,0
+"Clear Creek Storage Company, L.L.C.",2,6,0,5,0
+"Colorado Interstate Gas Company, L.L.C.",34,34,1,31,1
+"Columbia Gas Transmission, LLC",25,1778,0,525,0
+"Columbia Gulf Transmission, LLC",9,2,1,2,1
+Corpus Christi Pipeline,4,12,0,7,0
+Crossroads Pipeline Company,3,1,1,1,1
+Dauphin Island Gathering Partners,7,25,0,14,0
+"Destin Pipeline Company, L.L.C.",3,34,0,33,0
+Discovery Gas Transmission LLC,4,69,0,21,0
+"Dominion Energy Carolina Gas Transmission, LLC",6,2,1,2,1
+"Dominion Energy Cove Point LNG, LP",18,21,0,20,0
+"East Tennessee Natural Gas, LLC",7,52,0,214,0
+"Eastern Gas Transmission and Storage, Inc",28,894,0,966,0
+Eastern Shore Natural Gas Company,9,2,1,3,1
+"El Paso Natural Gas Company, L.L.C.",15,8,1,8,1
+"Elba Express Company, L.L.C.",3,1,1,1,1
+"Empire Pipeline, Inc.",22,16,0,18,0
+"Enable Gas Transmission, LLC",18,7,1,7,1
+"Enable Mississippi River Transmission, LLC",6,2,1,2,1
+"Equitrans, L.P.",19,2,1,2,1
+"ETC Tiger Pipeline, LLC",3,2,1,2,1
+Fayetteville Express Pipeline LLC,5,1,1,1,1
+"Florida Gas Transmission Company, LLC",11,4,1,4,1
+"Garden Banks Gas Pipeline, LLC",4,7,0,11,0
+Golden Pass Pipeline LLC,2,2,0,10,0
+"Granite State Gas Transmission, Inc.",3,1,1,1,1
+Great Lakes Gas Transmission Limited Partnership,5,4,1,3,1
+"Guardian Pipeline, L.L.C.",11,37,0,41,0
+Gulf Crossing Pipeline Company LLC,4,1,1,1,1
+"Gulf South Pipeline Company, LP",21,6,1,5,1
+Gulf States Transmission LLC,2,9,0,1,0
+"Gulfstream Natural Gas System, L.L.C.",8,1,1,1,1
+"Hardy Storage Company, LLC",2,2,0,3,0
+"High Island Offshore System, L.L.C.",8,47,0,13,0
+"High Point Gas Transmission, LLC",8,38,0,26,0
+"Horizon Pipeline Company, L.L.C.",2,8,0,5,0
+"Iroquois Gas Transmission System, L.P.",8,4,1,4,1
+Kern River Gas Transmission Company,12,32,0,91,0
+Kinder Morgan Illinois Pipeline LLC,2,4,0,4,0
+Kinder Morgan Louisiana Pipeline LLC,4,11,0,19,0
+"Kinetica Partners, LLC",4,1,1,1,1
+"KPC Pipeline, LLC",6,46,0,42,0
+LA Storage LLC,7,8,0,10,0
+"Maritimes & Northeast Pipeline, L.L.C.",10,3,1,3,1
+Midcontinent Express Pipeline LLC,3,3,1,3,1
+Midwestern Gas Transmission Company,9,72,0,71,0
+"MIGC, LLC",2,41,0,34,0
+"Millennium Pipeline Company, LLC",8,61,0,69,0
+"Mississippi Canyon Gas Pipeline, LLC",3,7,0,7,0
+MoGas Pipeline LLC,2,2,1,2,1
+"Mojave Pipeline Company, L.L.C.",3,2,1,1,1
+"MountainWest Overthrust Pipeline, LLC",2,17,0,17,0
+"MountainWest Pipeline, LLC",7,288,0,100,0
+National Fuel Gas Supply Corporation,18,8,1,98,0
+Natural Gas Pipeline Company of America LLC,11,15,1,15,1
+"Nautilus Pipeline Company, L.L.C.",5,7,0,15,0
+Nexus,4,38,0,35,0
+"North Baja Pipeline, LLC",5,7,0,9,0
+Northern Natural Gas Company,11,23,1,23,1
+Northwest Pipeline LLC,26,134,0,466,0
+"OkTex Pipeline Company, L.L.C.",5,4,1,4,1
+"Ozark Gas Transmission, L.L.C.",3,113,0,91,0
+Paiute Pipeline Company,6,8,0,20,0
+"Panhandle Eastern Pipe Line Company, LP",16,2,1,2,1
+"Pine Needle LNG Company, L.L.C.",2,2,0,2,0
+"Portland Natural Gas Transmission System, LP",43,19,0,32,0
+Questar Southern Trails Pipeline Company,2,4,0,7,0
+Rockies Express Pipeline LLC,8,3,1,3,1
+Rover Pipeline LLC,3,2,1,4,1
+"Ruby Pipeline, LLC",28,1,1,2,1
+"Sabal Trail Transmission, LLC",5,8,0,7,0
+Sabine Pipe Line LLC,2,3,1,4,1
+Saltville Gas Storage Company LLC,4,3,0,5,0
+"Sea Robin Pipeline Company, LLC",4,2,1,2,1
+Sierrita Gas Pipeline LLC,3,1,1,1,1
+"Southeast Supply Header, LLC.",3,15,0,15,0
+"Southern Natural Gas Company, L.L.C.",6,4,1,4,1
+"Southern Star Central Gas Pipeline, Inc.",16,3,1,3,1
+Southwest Gas Storage Company,2,2,1,2,1
+"Stingray Pipeline Company, L.L.C.",4,92,0,14,0
+Tallgrass Interstate Gas Transmission LLC,11,6,1,6,1
+"Tennessee Gas Pipeline Company, L.L.C.",10,8,1,8,1
+"Texas Eastern Transmission, LP",59,8,1,8,1
+"Texas Gas Transmission, LLC",17,8,1,8,1
+Trailblazer Pipeline Company LLC,7,49,0,74,0
+Trans-Union Interstate Pipeline LP,2,2,0,2,0
+TransColorado Gas Transmission Company LLC,4,31,0,21,0
+"Transcontinental Gas Pipe Line Company, LLC",58,8,1,8,1
+"Transwestern Pipeline Company, LLC",9,7,1,8,1
+"Trunkline Gas Company, LLC",14,4,1,4,1
+Tuscarora Gas Transmission Company,5,3,0,22,0
+Vector Pipeline L.P.,6,24,0,27,0
+Viking Gas Transmission Company,10,2,1,2,1
+"WBI Energy Transmission, Inc.",7,107,0,383,0
+White River Hub LLC,3,4,0,6,0
+"WTG Hugoton, L.P.",2,32,0,72,0
+"Wyoming Interstate Company, L.L.C.",4,26,1,23,1
+"Young Gas Storage Company, Ltd.",3,6,0,5,0
