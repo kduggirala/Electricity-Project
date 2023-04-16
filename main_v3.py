@@ -47,7 +47,15 @@ def try_button(button):
         try_button(banner)
         try_button(button)
 
-def write_through_combos(record, info, file_writer, rows):
+def write_through_deliveries(record, info, file_writer, rows):
+    delivery_zones = info[5].split(',')
+    delivery_points = info[6].split(',')
+    for i, _ in enumerate(delivery_zones):
+        record[6] = delivery_zones[i]
+        record[5] = delivery_points[i]
+        file_writer.writerows([record + row for row in rows])
+
+def write_through_receipts(record, info, file_writer, rows):
     receipt_zones = info[2].split(',')
     receipt_points = info[3].split(',')
     if not info[4]:
@@ -57,20 +65,11 @@ def write_through_combos(record, info, file_writer, rows):
             record[6] = "NaN"
             record[5] = info[6]
             file_writer.writerows([record + row for row in rows])
-        return
-
-    delivery_zones = info[5].split(',')
-    delivery_points = info[6].split(',')
-
-    for i, _ in enumerate(receipt_zones):
-        for j, _ in enumerate(delivery_zones):
+    else:
+        for i, _ in enumerate(receipt_zones):
             record[4] = receipt_zones[i]
             record[3] = receipt_points[i]
-            record[6] = delivery_zones[j]
-            record[5] = delivery_points[j]
-            file_writer.writerows([record + row for row in rows])
-            
-
+            write_through_deliveries(record, info, file_writer, rows)
 
 def search_through_combos(record, info, file_writer):
     global receipt_button_0
@@ -79,6 +78,7 @@ def search_through_combos(record, info, file_writer):
     global delivery_button_1
     global receipt_clear
     global delivery_clear
+    global delivery_all
     global apply_button
     global banner
     global driver
@@ -91,6 +91,20 @@ def search_through_combos(record, info, file_writer):
         receipt_button_1.click()
         driver.implicitly_wait(2)
         if info[4]:
+            try_button(delivery_button_1)
+            delivery_all.click()
+            delivery_button_1.click()
+            try_button(apply_button)
+            try_button(banner)
+            rows = extract_data()
+            if not rows:
+                continue
+            zone_structures = list(set([row[-1] for row in rows]))
+            if (len(zone_structures) == 1 and zone_structures[0] == "Entire System"):
+                record[3] = receipt_button_0.get_attribute('title').replace(',', ' ')
+                write_through_deliveries(record, info, file_writer, rows)
+                continue
+
             for delivery in range(1, info[4] + 1):
                 try_button(delivery_button_1)
                 delivery_clear.click()
@@ -136,13 +150,13 @@ driver.find_element(By.XPATH, '//*[@id="snl-navigation-top-menu"]/div/ul/li[6]/d
 banner = driver.find_element(By.XPATH, '//*[@id="section_1_control_17"]/div[1]/div/span[2]')
 try_button(banner)
 
-table = pd.read_csv("/Users/kdugg/OneDrive/Documents/Python Scripts/ElectricityProject/table2.csv")
+table = pd.read_csv("table2.csv")
 pipelines = list(table["Pipeline"])
 table = table.set_index("Pipeline")
 dates = ['04/15/2018'] + [f"0{i}/01/2018" for i in range(5, 10)] + [f"0{i}/01/20{j}" for i in range(1, 10) for j in range(19, 23)] + [f"{i}/01/20{j}" for i in range(10, 13) for j in range(18, 23)]
 for date in dates:
     date_mod = date.replace('/', '-')
-    file = open(f'/Users/kdugg/OneDrive/Documents/Python Scripts/ElectricityProject/rate_data_{date_mod}.csv', 'w', newline = '')
+    file = open(f'data/rate_data_{date_mod}.csv', 'w', newline = '')
     file_writer = csv.writer(file, delimiter = ',', quoting = csv.QUOTE_MINIMAL)
     file_writer.writerow(['Pipeline', 'Date', 'Rate Schedule', 'Receipt Point', 'Receipt Zone', 'Delivery Point', 'Delivery Zone', 'Tariff Rate Type', 'Tariff Rate', 'Magnitude', 'Tariff Rate Structure', 'Rate Zone'])
 
@@ -185,8 +199,8 @@ for date in dates:
 
             if info[1]:
                 zone_structures = list(set([row[-1] for row in rows]))
-                if len(zone_structures) == 1 and zone_structures[0] == "Entire System":
-                    write_through_combos(record, info, file_writer, rows)
+                if (len(zone_structures) == 1 and zone_structures[0] == "Entire System") or pipeline == 'Wyoming Interstate Company, L.L.C.':
+                    write_through_receipts(record, info, file_writer, rows)
                 else:
                     search_through_combos(record, info, file_writer)
                     try_button(receipt_button_1)
