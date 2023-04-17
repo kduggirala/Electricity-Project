@@ -77,6 +77,7 @@ def search_through_combos(record, info, file_writer):
     global receipt_button_1
     global delivery_button_1
     global receipt_clear
+    global receipt_all
     global delivery_clear
     global delivery_all
     global apply_button
@@ -91,9 +92,6 @@ def search_through_combos(record, info, file_writer):
         receipt_button_1.click()
         driver.implicitly_wait(2)
         if info[4]:
-            try_button(delivery_button_1)
-            delivery_all.click()
-            delivery_button_1.click()
             try_button(apply_button)
             try_button(banner)
             rows = extract_data()
@@ -104,7 +102,7 @@ def search_through_combos(record, info, file_writer):
                 record[3] = receipt_button_0.get_attribute('title').replace(',', ' ')
                 write_through_deliveries(record, info, file_writer, rows)
                 continue
-
+            
             for delivery in range(1, info[4] + 1):
                 try_button(delivery_button_1)
                 delivery_clear.click()
@@ -120,6 +118,9 @@ def search_through_combos(record, info, file_writer):
                 record[3] = receipt_button_0.get_attribute('title').replace(',', ' ')
                 if rows:
                     file_writer.writerows([record + row for row in rows])
+            try_button(delivery_button_1)
+            delivery_all.click()
+            delivery_button_1.click()
                 
         else:
             record[6] = 'NaN'
@@ -130,7 +131,10 @@ def search_through_combos(record, info, file_writer):
             record[3] = receipt_button_0.get_attribute('title').replace(',', ' ')
             if rows:
                 file_writer.writerows([record + row for row in rows])
-
+    try_button(receipt_button_1)
+    receipt_all.click()
+    receipt_button_1.click()
+    
 c = webdriver.ChromeOptions()
 c.add_argument("--incognito")
 driver = webdriver.Chrome(options = c)
@@ -203,12 +207,6 @@ for date in dates:
                     write_through_receipts(record, info, file_writer, rows)
                 else:
                     search_through_combos(record, info, file_writer)
-                    try_button(receipt_button_1)
-                    receipt_all.click()
-                    receipt_button_1.click()
-                    try_button(delivery_button_1)
-                    delivery_all.click()
-                    delivery_button_1.click()
             else:
                 record[3] = receipt_button_0.get_attribute('title').replace(',', ' ')
                 record[4] = 'NaN'
