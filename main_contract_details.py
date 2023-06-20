@@ -7,20 +7,15 @@ from selenium.common.exceptions import ElementClickInterceptedException
 import csv
 from bs4 import BeautifulSoup 
 
-def extract_data(quarter):
+def extract_data(quarter, pipeline):
     global driver
     soup = BeautifulSoup(driver.page_source, 'lxml')
-    table = soup.tbody
-    if not table:
-        return None
-    table_rows = [list(child.children) for child in table.children]
-    try:
-        #if the table has data, it'll be structure as rows of 7 elements
-        data_rows = [[e1.div.span.contents[0], e2.div.contents[0], e3.div.contents[0], e4.div.contents[0], e5.div.contents[0], e6.div.contents[0], e7.div.contents[0]] for [e1, e2, e3, e4, e5, e6, e7] in table_rows]
-        return [[quarter] + [str(e).replace(',', '') for e in row] for row in data_rows]
-    except ValueError:
-        #otherwise, the table has no data, so we return
-        return None
+    table = soup("tbody")[1]
+    rows = []
+    for tr in table("tr"):
+        e1, *tds = tr("td")
+        rows.append([quarter, pipeline] + [e1.div.span.contents[0].replace(',', '')] + [str(td.div.contents[0]).replace(',', '') for td in tds])
+    return rows
 
 def try_button(button):
     global driver
@@ -35,36 +30,60 @@ c.add_argument("--incognito")
 driver = webdriver.Chrome(options = c)
 driver.maximize_window()
 
-driver.get("https://www.capitaliq.spglobal.com/web/client?auth=inherit#industry/PipelineContractSummary")
+driver.get("https://www.capitaliq.spglobal.com/web/client?auth=inherit#industry/PipelineContractDetails")
 driver.implicitly_wait(4)
 driver.find_element(By.NAME, "username").send_keys("jasonross@uchicago.edu")
 driver.find_element(By.NAME, "password").send_keys("gyvfen-wujCe4-newxun")
 driver.find_element(By.XPATH, '//*[@id="login-mfe-container"]/div/div/div/main/div/div/div/form/div[4]/div[1]/button').click()
-driver.implicitly_wait(15)
+driver.implicitly_wait(10)
 driver.find_element(By.XPATH, '//*[@id="onetrust-accept-btn-handler"]').click()
 time.sleep(3)
 
-banner = driver.find_element(By.XPATH, '//*[@id="section_1_control_15"]/div[1]/div/span[2]')
-try_button(banner)
-period_button = driver.find_element(By.XPATH, '//*[@id="section_1_control_25"]/div/div/label/div/button')
-pipelines_button = driver.find_element(By.XPATH, '//*[@id="section_1_control_34"]/div/div/div[1]/label/div/button')
-select_all = driver.find_element(By.XPATH, '//*[@id="section_1_control_34"]/div/div/div[1]/label/div/div/div[1]/div[3]/a[1]')
-apply_all = driver.find_element(By.XPATH, '//*[@id="Apply_section_1_control_16"]')
+soup = BeautifulSoup(driver.page_source, 'lxml')
+table_header = soup("thead")[1]
+fields = ['Quarter', 'Pipeline'] + [child.span.div.contents[0] for child in table_header.tr.children]
 
-try_button(pipelines_button)
-try_button(select_all)
-try_button(pipelines_button)
-file = open(f'./data/contract_summary.csv', 'w', newline = '')
-file_writer = csv.writer(file, delimiter = ',', quoting = csv.QUOTE_MINIMAL)
-file_writer.writerow(['Quarter', 'Pipeline', 'Total Daily Transportation (DTH)', 'Monthly Est. Transportation Reservation Revenue ($)', 'Total Storage (DTH)', 'Monthly Estimated Storage Reservation Revenue ($)', 'Average Contract Length (Months)', 'Active Contracts'])
-quarters = ["Q2 2023", "Q1 2023"] + [f"Q{i} 20{j}" for j in range(22, 16) for i in range(4, 0, -1)]
-
-for i, quarter in enumerate(quarters):
-    try_button(period_button)
-    driver.find_element(By.XPATH, f'//*[@id="section_1_control_25"]/div/div/label/div/div/ul/li[{i + 1}]').click()
-    try_button(apply_all)
-    time.sleep(1)
-    file_writer.writerows(extract_data(quarter))
+for qtr in range(1,27):
+    banner = driver.find_element(By.XPATH, '//*[@id="section_1_control_19"]/div[1]/div')
     try_button(banner)
-file.close()
-    
+    quarter_button = driver.find_element(By.XPATH, '//*[@id="section_1_control_29"]/div/div/label/div/button')
+    pipeline_button = driver.find_element(By.XPATH, '//*[@id="section_1_control_38"]/div/div/label/div/button')
+    clear_all = driver.find_element(By.XPATH, '//*[@id="section_1_control_38"]/div/div/label/div/div/div[1]/div[3]/a')
+    apply_all = driver.find_element(By.XPATH, '//*[@id="Apply_section_1_control_20"]')
+
+    file = open(f'./data/contract_data/contract_details_{qtr}.csv', 'w', newline = '')
+    file_writer = csv.writer(file, delimiter = ',', quoting = csv.QUOTE_MINIMAL)
+    file_writer.writerow(fields)
+
+    quarter_button.click()
+    quarter = driver.find_element(By.XPATH, f'//*[@id="section_1_control_29"]/div/div/label/div/div/ul/li[{qtr}]/a/span[1]').text
+    driver.find_element(By.XPATH, f'//*[@id="section_1_control_29"]/div/div/label/div/div/ul/li[{qtr}]/a').click()
+    time.sleep(0.1)
+    pipeline_button.click()
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+    num_pipelines = len(list(soup.find_all("ul", {"class": "dropdown-menu inner"})[1].children))
+    pipeline_button.click()
+    for i in range(1, num_pipelines + 1):
+        try_button(pipeline_button)
+        try_button(clear_all)
+        driver.find_element(By.XPATH, f'//*[@id="section_1_control_38"]/div/div/label/div/div/ul/li[{i}]/a').click()
+        pipeline = driver.find_element(By.XPATH, f'//*[@id="section_1_control_38"]/div/div/label/div/div/ul/li[{i}]/a/span[1]').text
+        try_button(pipeline_button)
+        try_button(apply_all)
+        try_button(banner)
+        file_writer.writerows(extract_data(quarter, pipeline))
+
+        status = driver.find_element(By.XPATH, f'//*[@class="ui-iggrid-nextpage ui-iggrid-paging-item ui-state-default"]/span[1]').get_attribute("class")
+        while status == "ui-iggrid-nextpagelabel":
+            try_button(driver.find_element(By.XPATH, '//*[@class="ui-iggrid-nextpage ui-iggrid-paging-item ui-state-default"]'))
+            time.sleep(0.5)
+            file_writer.writerows(extract_data(quarter, pipeline))
+            status = driver.find_element(By.XPATH, f'//*[@class="ui-iggrid-nextpage ui-iggrid-paging-item ui-state-default"]/span[1]').get_attribute("class")
+        try_button(apply_all)
+        try_button(banner)
+
+        file.flush()
+    file.close()
+    driver.get(driver.current_url)
+    time.sleep(1)
+    driver.refresh()
